@@ -10,5 +10,5 @@ public interface TaskService {
     Optional<Task> getTaskById(String username, Long id);
     Task createTask(String username, Task task);
     Optional<Task> updateTask(String username, Task updatedTask);
-    void deleteTask(String username, Long id);
+    boolean deleteTask(String username, Long id);
 }

@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @Profile("inMemory")
-public class inMemoryTaskService implements TaskService {
+public class InMemoryTaskService implements TaskService {
 
     private final Map<String, List<Task>> taskStorage = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
@@ -48,7 +48,7 @@ public class inMemoryTaskService implements TaskService {
     }
 
     @Override
-    public void deleteTask(String username, Long id) {
-        getTasks(username).removeIf(task -> task.getId().equals(id));
+    public boolean deleteTask(String username, Long id) {
+        return getTasks(username).removeIf(task -> task.getId().equals(id));
     }
 }
