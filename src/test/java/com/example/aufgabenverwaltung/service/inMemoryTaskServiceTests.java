@@ -1,0 +1,113 @@
+package com.example.aufgabenverwaltung.service;
+
+import com.example.aufgabenverwaltung.model.Task;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class inMemoryTaskServiceTests {
+
+
+    private InMemoryTaskService taskService;
+
+    @BeforeEach
+    void setUp() {
+        taskService = new InMemoryTaskService();
+    }
+
+    @Test
+    void createTask_ShouldAssignIdAndStoreTask() {
+        String userName = "JulianNiedbal";
+        Task apiTask = new Task("Tests schreiben", "Schreibe Unit Tests für den inMemoryTaskService", false);
+        Task createdTask = taskService.createTask(userName, apiTask);
+
+        assertNotNull(createdTask.getId(), "Task sollte erstellt und Id gesetzt sein");
+    }
+
+    @Test
+    void getTasks_ShouldReturnAllTasksByUser() {
+        String userA = "User A";
+        String userB = "User B";
+
+        taskService.createTask(userA, new Task ("Task A 1", "Test Task", false));
+        taskService.createTask(userA, new Task ("Task A 2", "Test Task", false));
+
+        taskService.createTask(userB, new Task ("Task B 1", "Test Task", false));
+
+        List<Task> tasks = taskService.getTasks(userA);
+
+        assertEquals(2, tasks.size());
+        assertTrue(tasks.stream().allMatch(task -> task.getOwnerUsername().equals(userA)), "Alle Tasks sollten zum User " + userA + " gehören");
+        assertFalse(tasks.stream().allMatch(task -> task.getOwnerUsername().equals(userB)), "Keine Tasks sollten zum User " + userB + " gehören");
+    }
+
+    @Test
+    void getTaskById_ShouldReturnTask() {
+        String userC = "User C";
+        Task createdTask1 = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
+        Task createdTask2 = taskService.createTask(userC, new Task ("Task C 2", "Test Task", false));
+
+        Optional<Task> testTask = taskService.getTaskById(userC,createdTask1.getId());
+
+        assertTrue(testTask.isPresent(), "Task wurde nicht gefunden");
+        assertEquals(createdTask1.getId(), testTask.get().getId(), "Task hat nicht ursprünglich generierte Id");
+        assertNotEquals(createdTask2.getId(), testTask.get().getId(), "Task hat die selbe Id wie ein anderer Task");
+    }
+
+    @Test
+    void updateTask_ShouldUpdateTaskIfItExists() {
+        String userC = "User C";
+
+        Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
+        Task updatedTask = new Task ("Task C 2", "Test Task", false);
+        updatedTask.setId(originalTask.getId());
+        Optional<Task> testTask = taskService.updateTask(userC, updatedTask);
+
+        assertTrue(testTask.isPresent(), "Task wurde nicht gefunden");
+        assertEquals(testTask.get().getTitle(), updatedTask.getTitle(), "Task Titel wurde nicht geupdated");
+        assertNotEquals(testTask.get().getTitle(), originalTask.getTitle(), "Task Titel wurde nicht geupdated");
+    }
+
+    @Test
+    void testTask_ShouldReturnEmptyListIfTaskDoesNotExist() {
+        String userC = "User C";
+
+        Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
+        Task updatedTask = new Task ("Task C 2", "Test Task", false);
+        updatedTask.setId(originalTask.getId()+1);
+        Optional<Task> testTask = taskService.updateTask(userC, updatedTask);
+
+        assertNotEquals(originalTask.getId(), updatedTask.getId(), "Tasks sollten verschiedene Ids haben");
+        assertFalse(testTask.isPresent(), "Task mit übergebener Id sollte nicht existieren");
+    }
+
+    @Test
+    void deleteTask_ShouldDeleteTaskIfItExists() {
+        String userC = "User C";
+        Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
+        boolean taskDeleted = taskService.deleteTask(userC, originalTask.getId());
+        Optional<Task> testTask = taskService.getTaskById(userC,originalTask.getId());
+
+        assertTrue(taskDeleted, "Es sollte zurückgegeben worden sein, dass der Task gelöscht wurde");
+        assertFalse(testTask.isPresent(), "Task wurde nicht gelöscht");
+    }
+
+    @Test
+    void deleteTask_ShouldDoNothingIfItDoesNotExist() {
+        String userC = "User C";
+
+        Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
+        long falseId = originalTask.getId()+1;
+        boolean taskDeleted = taskService.deleteTask(userC, falseId);
+        Optional<Task> testTask = taskService.getTaskById(userC,originalTask.getId());
+
+        assertFalse(taskDeleted, "Es sollte zurückgegeben worden sein, dass der Task nicht gelöscht wurde");
+        assertFalse(testTask.isEmpty(), "Task hätte nicht gelöscht werden dürfen");
+    }
+
+}
