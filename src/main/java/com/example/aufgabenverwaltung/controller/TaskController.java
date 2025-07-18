@@ -1,6 +1,6 @@
 package com.example.aufgabenverwaltung.controller;
 
-import com.example.aufgabenverwaltung.model.Task;
+import com.example.aufgabenverwaltung.model.entities.Task;
 import com.example.aufgabenverwaltung.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

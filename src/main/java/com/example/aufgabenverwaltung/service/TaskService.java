@@ -1,6 +1,6 @@
 package com.example.aufgabenverwaltung.service;
 
-import com.example.aufgabenverwaltung.model.Task;
+import com.example.aufgabenverwaltung.model.entities.Task;
 
 import java.util.List;
 import java.util.Optional;

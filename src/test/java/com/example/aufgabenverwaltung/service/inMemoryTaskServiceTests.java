@@ -1,7 +1,6 @@
 package com.example.aufgabenverwaltung.service;
 
-import com.example.aufgabenverwaltung.model.Task;
-import org.junit.jupiter.api.Assertions;
+import com.example.aufgabenverwaltung.model.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

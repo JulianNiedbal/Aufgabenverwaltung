@@ -1,4 +1,4 @@
-package com.example.aufgabenverwaltung.model;
+package com.example.aufgabenverwaltung.model.entities;
 
 import jakarta.persistence.*;
 

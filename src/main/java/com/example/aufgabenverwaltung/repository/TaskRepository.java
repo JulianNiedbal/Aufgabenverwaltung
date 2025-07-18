@@ -1,6 +1,6 @@
 package com.example.aufgabenverwaltung.repository;
 
-import com.example.aufgabenverwaltung.model.Task;
+import com.example.aufgabenverwaltung.model.entities.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
