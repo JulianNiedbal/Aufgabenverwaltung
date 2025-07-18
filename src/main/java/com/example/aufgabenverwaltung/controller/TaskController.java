@@ -1,5 +1,6 @@
 package com.example.aufgabenverwaltung.controller;
 
+import com.example.aufgabenverwaltung.model.dto.TaskInsertionDto;
 import com.example.aufgabenverwaltung.model.entities.Task;
 import com.example.aufgabenverwaltung.service.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class TaskController {
 
     @GetMapping("tasks")
     public List<Task> getTasks(@RequestHeader("X-User") String username) {
-        return  taskService.getTasks(username);
+        return taskService.getTasks(username);
     }
 
     @GetMapping("tasks/{id}")
@@ -27,13 +28,13 @@ public class TaskController {
     }
 
     @PostMapping("tasks")
-    public Task addTask(@RequestHeader("X-User") String username, @RequestBody Task task) {
-        return taskService.createTask(username,task);
+    public Task addTask(@RequestHeader("X-User") String username, @RequestBody TaskInsertionDto taskDto) {
+        return taskService.createTask(username, taskDto);
     }
 
     @PutMapping("tasks/{id}")
-    public ResponseEntity<Task> updateTask(@RequestHeader("X-User") String username, @PathVariable("id") Long id, @RequestBody Task task) {
-        return taskService.updateTask(username, id, task).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Task> updateTask(@RequestHeader("X-User") String username, @PathVariable("id") Long id, @RequestBody TaskInsertionDto taskDto) {
+        return taskService.updateTask(username, id, taskDto).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("tasks/{id}")

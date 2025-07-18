@@ -1,6 +1,8 @@
 package com.example.aufgabenverwaltung.service;
 
+import com.example.aufgabenverwaltung.model.dto.TaskInsertionDto;
 import com.example.aufgabenverwaltung.model.entities.Task;
+import com.example.aufgabenverwaltung.model.mapper.TaskMapper;
 import com.example.aufgabenverwaltung.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Profile;
@@ -30,13 +32,13 @@ public class PostgresTaskService implements TaskService {
     }
 
     @Override
-    public Task createTask(String username, Task task) {
-        task.setOwnerUsername(username);
+    public Task createTask(String username, TaskInsertionDto taskDto) {
+        Task task = TaskMapper.toEntity(username, taskDto);
         return taskRepository.save(task);
     }
 
     @Override
-    public Optional<Task> updateTask(String username, Long id, Task updatedTask) {
+    public Optional<Task> updateTask(String username, Long id, TaskInsertionDto updatedTask) {
         return taskRepository.findByIdAndOwnerUsername(id, username).map(
                 existingTask -> {
                     existingTask.setTitle(updatedTask.getTitle());

@@ -1,6 +1,8 @@
 package com.example.aufgabenverwaltung.service;
 
+import com.example.aufgabenverwaltung.model.dto.TaskInsertionDto;
 import com.example.aufgabenverwaltung.model.entities.Task;
+import com.example.aufgabenverwaltung.model.mapper.TaskMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +28,22 @@ public class InMemoryTaskService implements TaskService {
     }
 
     @Override
-    public Task createTask(String username, Task task) {
+    public Task createTask(String username, TaskInsertionDto taskDto) {
+        Task task = TaskMapper.toEntity(username, taskDto);
         task.setId(idGenerator.incrementAndGet());
-        task.setOwnerUsername(username);
         taskStorage.computeIfAbsent(username, k -> new ArrayList<>()).add(task);
         return task;
     }
 
     @Override
-    public Optional<Task> updateTask(String username, Long id, Task updatedTask) {
+    public Optional<Task> updateTask(String username, Long id, TaskInsertionDto updatedTask) {
         List<Task> oldTasksOfUser = taskStorage.get(username);
-        if(oldTasksOfUser != null) {
-            for(int i = 0; i < oldTasksOfUser.size(); i++) {
-                if(oldTasksOfUser.get(i).getId().equals(id)) {
-                    updatedTask.setId(id);
-                    updatedTask.setOwnerUsername(username);
-                    oldTasksOfUser.set(i, updatedTask);
+        if (oldTasksOfUser != null) {
+            for (int i = 0; i < oldTasksOfUser.size(); i++) {
+                if (oldTasksOfUser.get(i).getId().equals(id)) {
+                    Task newTask = TaskMapper.toEntity(username, updatedTask);
+                    newTask.setId(oldTasksOfUser.get(i).getId());
+                    oldTasksOfUser.set(i, newTask);
                     return Optional.of(oldTasksOfUser.get(i));
                 }
             }
