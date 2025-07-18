@@ -65,8 +65,7 @@ public class inMemoryTaskServiceTests {
 
         Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
         Task updatedTask = new Task ("Task C 2", "Test Task", false);
-        updatedTask.setId(originalTask.getId());
-        Optional<Task> testTask = taskService.updateTask(userC, updatedTask);
+        Optional<Task> testTask = taskService.updateTask(userC, originalTask.getId(), updatedTask);
 
         assertTrue(testTask.isPresent(), "Task wurde nicht gefunden");
         assertEquals(testTask.get().getTitle(), updatedTask.getTitle(), "Task Titel wurde nicht geupdated");
@@ -79,8 +78,7 @@ public class inMemoryTaskServiceTests {
 
         Task originalTask = taskService.createTask(userC, new Task ("Task C 1", "Test Task", false));
         Task updatedTask = new Task ("Task C 2", "Test Task", false);
-        updatedTask.setId(originalTask.getId()+1);
-        Optional<Task> testTask = taskService.updateTask(userC, updatedTask);
+        Optional<Task> testTask = taskService.updateTask(userC, originalTask.getId()+1, updatedTask);
 
         assertNotEquals(originalTask.getId(), updatedTask.getId(), "Tasks sollten verschiedene Ids haben");
         assertFalse(testTask.isPresent(), "Task mit übergebener Id sollte nicht existieren");

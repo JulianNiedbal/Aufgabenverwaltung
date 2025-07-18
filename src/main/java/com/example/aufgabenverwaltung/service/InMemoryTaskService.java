@@ -34,11 +34,13 @@ public class InMemoryTaskService implements TaskService {
     }
 
     @Override
-    public Optional<Task> updateTask(String username, Task updatedTask) {
+    public Optional<Task> updateTask(String username, Long id, Task updatedTask) {
         List<Task> oldTasksOfUser = taskStorage.get(username);
         if(oldTasksOfUser != null) {
             for(int i = 0; i < oldTasksOfUser.size(); i++) {
-                if(oldTasksOfUser.get(i).getId().equals(updatedTask.getId())) {
+                if(oldTasksOfUser.get(i).getId().equals(id)) {
+                    updatedTask.setId(id);
+                    updatedTask.setOwnerUsername(username);
                     oldTasksOfUser.set(i, updatedTask);
                     return Optional.of(oldTasksOfUser.get(i));
                 }
