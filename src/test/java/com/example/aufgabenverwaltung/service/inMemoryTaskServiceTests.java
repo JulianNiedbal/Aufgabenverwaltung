@@ -4,12 +4,14 @@ import com.example.aufgabenverwaltung.model.dto.TaskInsertionDto;
 import com.example.aufgabenverwaltung.model.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class inMemoryTaskServiceTests {
 
 
