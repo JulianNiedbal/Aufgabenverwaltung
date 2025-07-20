@@ -55,4 +55,20 @@ public class InMemoryTaskService implements TaskService {
     public boolean deleteTask(String username, Long id) {
         return getTasks(username).removeIf(task -> task.getId().equals(id));
     }
+
+    @Override
+    public void changeOwnerUsername(String oldName, String newName) {
+        if (taskStorage.containsKey(oldName)) {
+            List<Task> oldTasksOfUser = taskStorage.remove(oldName);
+            taskStorage.put(newName, oldTasksOfUser.stream().peek(task -> task.setOwnerUsername(newName)).toList());
+        }
+    }
+
+    @Override
+    public void deleteAllTasksByOwnerUsername(String username) {
+        //Todo testen
+        taskStorage.remove(username);
+    }
+
+
 }

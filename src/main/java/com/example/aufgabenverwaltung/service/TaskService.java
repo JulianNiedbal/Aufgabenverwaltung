@@ -16,4 +16,8 @@ public interface TaskService {
     Optional<Task> updateTask(String username, Long id, TaskInsertionDto taskDto);
 
     boolean deleteTask(String username, Long id);
+
+    void changeOwnerUsername(String oldName, String newName);
+
+    void deleteAllTasksByOwnerUsername(String username);
 }

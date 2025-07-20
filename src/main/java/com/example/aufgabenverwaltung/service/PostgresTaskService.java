@@ -54,4 +54,19 @@ public class PostgresTaskService implements TaskService {
     public boolean deleteTask(String username, Long id) {
         return taskRepository.deleteTaskByIdAndOwnerUsername(id, username) > 0;
     }
+
+    @Override
+    public void changeOwnerUsername(String oldName, String newName) {
+        // TODO: Implementieren und Testen
+        taskRepository.findAllByOwnerUsername(oldName).forEach(existingTask -> {
+            existingTask.setOwnerUsername(newName);
+            taskRepository.save(existingTask);
+        });
+    }
+
+    @Override
+    public void deleteAllTasksByOwnerUsername(String username) {
+        // Todo Testen
+        taskRepository.deleteAllByOwnerUsername(username);
+    }
 }

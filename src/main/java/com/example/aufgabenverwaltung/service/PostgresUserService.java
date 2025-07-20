@@ -31,11 +31,16 @@ public class PostgresUserService implements UserService {
 
     @Override
     public Optional<User> updateUser(String username, UserInsertionDto userInsertionDto) {
-        return userRepository.findByUsername(username).map(user -> userRepository.save(UserMapper.toEntity(userInsertionDto)));
+        return userRepository.findByUsername(username)
+                .map(oldUser -> {
+                    oldUser.setUsername(userInsertionDto.getUsername());
+                    return userRepository.save(oldUser);
+                });
     }
 
     @Override
     public boolean deleteUserByUsername(String username) {
+        // Todo Testen
         return userRepository.deleteUserByUsername(username) > 0;
     }
 
