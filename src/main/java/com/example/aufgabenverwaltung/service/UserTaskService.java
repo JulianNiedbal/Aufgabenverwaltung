@@ -19,9 +19,7 @@ public class UserTaskService {
         this.userService = userService;
         this.taskService = taskService;
     }
-
-    // Todo testen
-
+    
     public Optional<User> updateUser(String username, UserInsertionDto userInsertionDto) {
         taskService.changeOwnerUsername(username, userInsertionDto.getUsername());
         return userService.updateUser(username, userInsertionDto);
