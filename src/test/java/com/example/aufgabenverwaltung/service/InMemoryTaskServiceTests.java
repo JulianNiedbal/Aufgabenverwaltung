@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class inMemoryTaskServiceTests {
+public class InMemoryTaskServiceTests {
 
 
     private InMemoryTaskService taskService;
