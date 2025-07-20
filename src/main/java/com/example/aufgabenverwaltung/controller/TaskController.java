@@ -3,17 +3,21 @@ package com.example.aufgabenverwaltung.controller;
 import com.example.aufgabenverwaltung.model.dto.TaskInsertionDto;
 import com.example.aufgabenverwaltung.model.entities.Task;
 import com.example.aufgabenverwaltung.service.TaskService;
+import com.example.aufgabenverwaltung.service.UserTaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class TaskController {
 
     TaskService taskService;
+    UserTaskService userTaskService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, UserTaskService userTaskService) {
+        this.userTaskService = userTaskService;
         this.taskService = taskService;
     }
 
@@ -28,8 +32,8 @@ public class TaskController {
     }
 
     @PostMapping("tasks")
-    public Task addTask(@RequestHeader("X-User") String username, @RequestBody TaskInsertionDto taskDto) {
-        return taskService.createTask(username, taskDto);
+    public Optional<Task> addTask(@RequestHeader("X-User") String username, @RequestBody TaskInsertionDto taskDto) {
+        return userTaskService.createTask(username, taskDto);
     }
 
     @PutMapping("tasks/{id}")
