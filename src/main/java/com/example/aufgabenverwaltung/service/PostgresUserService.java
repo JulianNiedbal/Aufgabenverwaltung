@@ -43,7 +43,6 @@ public class PostgresUserService implements UserService {
     @Override
     @Transactional
     public boolean deleteUserByUsername(String username) {
-        // Todo Testen
         return userRepository.deleteUserByUsername(username) > 0;
     }
 

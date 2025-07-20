@@ -57,7 +57,6 @@ public class PostgresTaskService implements TaskService {
 
     @Override
     public void changeOwnerUsername(String oldName, String newName) {
-        // TODO: Implementieren und Testen
         taskRepository.findAllByOwnerUsername(oldName).forEach(existingTask -> {
             existingTask.setOwnerUsername(newName);
             taskRepository.save(existingTask);
@@ -67,7 +66,6 @@ public class PostgresTaskService implements TaskService {
     @Override
     @Transactional
     public void deleteAllTasksByOwnerUsername(String username) {
-        // Todo Testen
         taskRepository.deleteAllByOwnerUsername(username);
     }
 }
