@@ -65,6 +65,7 @@ public class PostgresTaskService implements TaskService {
     }
 
     @Override
+    @Transactional
     public void deleteAllTasksByOwnerUsername(String username) {
         // Todo Testen
         taskRepository.deleteAllByOwnerUsername(username);

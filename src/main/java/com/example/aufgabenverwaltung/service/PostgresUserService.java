@@ -6,6 +6,7 @@ import com.example.aufgabenverwaltung.model.mapper.UserMapper;
 import com.example.aufgabenverwaltung.repository.UserRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class PostgresUserService implements UserService {
     }
 
     @Override
+    @Transactional
     public Optional<User> updateUser(String username, UserInsertionDto userInsertionDto) {
         return userRepository.findByUsername(username)
                 .map(oldUser -> {
@@ -39,6 +41,7 @@ public class PostgresUserService implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUserByUsername(String username) {
         // Todo Testen
         return userRepository.deleteUserByUsername(username) > 0;
