@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @Profile("postgres")
-public class PostgresUserService {
+public class PostgresUserService implements UserService {
 
     UserRepository userRepository;
 
@@ -19,19 +19,23 @@ public class PostgresUserService {
         this.userRepository = userRepository;
     }
 
-    User createUser(UserInsertionDto userInsertionDto) {
+    @Override
+    public User createUser(UserInsertionDto userInsertionDto) {
         return userRepository.save(UserMapper.toEntity(userInsertionDto));
     }
 
-    Optional<User> getUserByUsername(String username) {
+    @Override
+    public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    Optional<User> updateUser(String username, UserInsertionDto userInsertionDto) {
+    @Override
+    public Optional<User> updateUser(String username, UserInsertionDto userInsertionDto) {
         return userRepository.findByUsername(username).map(user -> userRepository.save(UserMapper.toEntity(userInsertionDto)));
     }
 
-    boolean deleteUserByUsername(String username) {
+    @Override
+    public boolean deleteUserByUsername(String username) {
         return userRepository.deleteUserByUsername(username) > 0;
     }
 
